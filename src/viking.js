@@ -65,32 +65,31 @@ class War {
         this.saxonArmy.push(saxon);
     }
 
-    vikingAttack() {
-        const saxon = this.saxonArmy[Math.floor(Math.random() * this.saxonArmy.length)];
-        const viking = this.vikingArmy[Math.floor(Math.random() * this.vikingArmy.length)];
-
-        const attack = saxon.receiveDamage(viking.strength);
+    // generic attack method, needs the arrays for armies from this class as arguments
+    attack(attackingArmy, defendingArmy) {
+        // select random individual element from each army array
+        const attacker = attackingArmy[Math.floor(Math.random() * attackingArmy.length)];
+        const defender = defendingArmy[Math.floor(Math.random() * defendingArmy.length)];
         
-        this.saxonArmy.forEach((saxon, index) => {
-            if (saxon.health <= 0) {
-                this.saxonArmy.splice(index, 1);
+        // store the result of calling receiveDamage
+        const attack = defender.receiveDamage(attacker.strength);
+
+        // remove any dead soldiers from defending army
+        defendingArmy.forEach((soldier, index) => {
+            if (soldier.health <= 0) {
+                defendingArmy.splice(index, 1);
             }
         });
         return attack;
     }
 
-    saxonAttack() {
-        const saxon = this.saxonArmy[Math.floor(Math.random() * this.saxonArmy.length)];
-        const viking = this.vikingArmy[Math.floor(Math.random() * this.vikingArmy.length)];
+    // call attack for either army
+    vikingAttack() {
+        return this.attack(this.vikingArmy, this.saxonArmy);
+    }
 
-        const attack = viking.receiveDamage(saxon.strength);
-        
-        this.vikingArmy.forEach((viking, index) => {
-            if (viking.health <= 0) {
-                this.vikingArmy.splice(index, 1);
-            }
-        });
-        return attack;
+    saxonAttack() {
+        return this.attack(this.saxonArmy, this.vikingArmy);
     }
 
     showStatus() {
