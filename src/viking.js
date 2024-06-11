@@ -65,8 +65,17 @@ class War {
         this.saxonArmy.push(saxon);
     }
 
-    // generic attack method, needs the arrays for armies from this class as arguments
-    attack(attackingArmy, defendingArmy) {
+    // generic attack method,
+    attack(isVikingAttack) {
+        
+        if (isVikingAttack) {
+            attackingArmy = this.vikingArmy;
+            defendingArmy = this.saxonArmy;
+        }
+        else {
+            attackingArmy = this.saxonArmy;
+            defendingArmy = this.vikingArmy;
+        }
         // select random individual element from each army array
         const attacker = attackingArmy[Math.floor(Math.random() * attackingArmy.length)];
         const defender = defendingArmy[Math.floor(Math.random() * defendingArmy.length)];
@@ -85,11 +94,11 @@ class War {
 
     // call attack for either army
     vikingAttack() {
-        return this.attack(this.vikingArmy, this.saxonArmy);
+        return this.attack(true);
     }
 
     saxonAttack() {
-        return this.attack(this.saxonArmy, this.vikingArmy);
+        return this.attack(false);
     }
 
     showStatus() {
